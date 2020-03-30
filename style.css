@@ -1,0 +1,138 @@
+body {
+    margin: 0;
+}
+textarea {
+    display: block;
+    width: 730px;
+    height: 20vh;
+    margin: 20px auto 0;
+    
+}
+#wrapper {
+    width: 730px;
+    display: flex;
+    flex-flow: row wrap;
+    margin: 20px auto 0;
+    padding: 5px 5px;
+
+    border: 1px solid black;
+    border-radius: 10px ;
+
+    background-color: #42494f;
+}
+
+.key {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 15px;
+
+    background-color: #232a30AA;
+    border-radius: 5px;
+    margin: 2px;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+
+    
+}
+
+.backspace {
+    display: flex;
+    width: 124px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #232a30AA;
+    border-radius: 5px;
+    margin: 3px;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+}
+
+.tab {
+    display: flex;
+    width: 60px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #232a30AA;
+    border-radius: 5px;
+    margin: 2px;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+}
+
+.caps {
+    display: flex;
+    width: 86px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #232a30AA;
+    border-radius: 5px;
+    margin: 2px;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+}
+
+.shift {
+    display: flex;
+    width: 106px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #232a30AA;
+    border-radius: 5px;
+    margin: 2px;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+}
+
+.space {
+    display: flex;
+    width: 190px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #232a30AA;
+    border-radius: 5px;
+    margin: 2px;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+}
+.arrow {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 15px;
+
+    background-color: #232a30AA;
+    border-radius: 5px;
+    margin: 2px;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+
+    
+}
+
+div:hover {
+    background-color: burlywood;
+}
