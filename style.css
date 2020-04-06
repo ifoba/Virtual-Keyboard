@@ -136,3 +136,13 @@ textarea {
 div:hover {
     background-color: burlywood;
 }
+
+#info {
+    width: 730px;
+    margin: 50px auto 0;
+    font-family: sans-serif;
+}
+
+#info:hover {
+    background: none;
+}
