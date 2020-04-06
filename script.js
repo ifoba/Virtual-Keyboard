@@ -14,6 +14,7 @@ const shiftActiveRu = [ 'Ё', '!', '"', '№', ';', '%', ':', '?', '*', '(', ')'
 let shiftStatus = false;
 let capsStatus = false;
 let upperStatus = false;
+let langStatus = false;
 let arr;
 let area = document.createElement('textarea');
 area.id = 'area';
@@ -29,7 +30,7 @@ let info = document.createElement('div');
 info.id = 'info';
 info.innerHTML = 'Сделано под Windows, смена раскладки Alt+Shift. <br> Если отсутствует подсветка, при нажатии на клавиатуру, нажмите на клавишу EN'
 document.body.append(info);
-localStorage.removeItem('language')
+
 
 if (localStorage.getItem('language') == null) {
     arr = ENG
@@ -80,7 +81,7 @@ function alternative (arr) {
 }
 // Перерисовка при смене языка
  document.addEventListener('keydown', function (event) {  
-    if (event.shiftKey && event.altKey) {
+    if (event.shiftKey && event.altKey && langStatus == false) {
         wrap.querySelectorAll('div').forEach(el => el.remove())
         if (arr === ENG) {
             arr = RU;
@@ -93,12 +94,14 @@ function alternative (arr) {
         lang(arr); 
         shiftStatus = false;
         upperStatus = false;
-        capsStatus = false;       
+        capsStatus = false;
+        langStatus = true;       
     }    
  });
 
 // Нажатие на клавиатуру
  document.addEventListener('keydown', function (event) {
+     area.focus()
      arr.forEach( function (el, index) {        
         if (el.toUpperCase() == event.key.toUpperCase() ) {
             if (event.key == 'CapsLock' ){
@@ -205,48 +208,72 @@ function alternative (arr) {
         wrap.querySelectorAll('div')[42].style.background = '';
         wrap.querySelectorAll('div')[54].style.background = '';
         alternative(arr);
+        langStatus = false;
         
      }
     if (event.key === 'Alt') {
         wrap.querySelectorAll('div')[57].style.background = '';
         wrap.querySelectorAll('div')[59].style.background = '';
+        langStatus = false;
     }
      
  })
  
 // Реакция на клики
  document.getElementById('wrapper').addEventListener('click', function (event) {
+    area.focus()
     if (event.target.id != 'wrapper') {  
         if (event.target.classList.contains('shift')) {
             if (shiftStatus === true) {
+                if (upperStatus == true) {
+                    upperStatus = false;
+                }
+                else {
+                    upperStatus = true;
+                }
                 shiftStatus = false;
-                upperStatus = false;
+                
                 wrap.querySelectorAll('div')[42].style.background = '';
                 wrap.querySelectorAll('div')[54].style.background = '';
                 alternative(arr);
             }
-            else { 
-                wrap.querySelectorAll('div')[42].style.background = 'red';
-                wrap.querySelectorAll('div')[54].style.background = 'red';
-                shiftStatus = true;
-                upperStatus = true;
+            else {                 
+                if (upperStatus == true) {
+                    upperStatus = false;
+                }
+                else {
+                    upperStatus = true;
+                }
                 if (arr == RU){
                     alternative(shiftActiveRu);
                 }
                 else {
                     alternative(shiftActive);
-                }   
+                }
+                shiftStatus = true;
+                wrap.querySelectorAll('div')[42].style.background = 'red';
+                wrap.querySelectorAll('div')[54].style.background = 'red';   
             }
         }
         else if (event.target.classList.contains('caps')) {
             if (capsStatus === true) {
+                if (upperStatus == true) {
+                    upperStatus = false;
+                }
+                else {
+                    upperStatus = true;
+                }
                 capsStatus = false;
-                upperStatus = false;
                 event.target.style.background = '';
             }
             else {
+                if (upperStatus == true) {
+                    upperStatus = false;
+                }
+                else {
+                    upperStatus = true;
+                }
                 capsStatus = true;
-                upperStatus = true;
                 event.target.style.background = 'red';
             } 
         }
