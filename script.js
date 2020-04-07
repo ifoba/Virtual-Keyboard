@@ -1,15 +1,11 @@
-const ENG = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', 
-            'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\/','Delete',
-            'CapsLock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', `'`, 'Enter',
-            'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '.', ',', '?', 'Up', ' Shift',
-            'Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Ctrl', 'Left', 'Down', 'Right', 'EN'];
+const ENG = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', 'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\/','Delete', 'CapsLock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', `'`, 'Enter', 'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '.', ',', '?', 'Up', ' Shift', 'Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Ctrl', 'Left', 'Down', 'Right', 'EN'];
 const RU = ['Ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', 
-            'Tab', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '\/','Del',
+            'Tab', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '\/','Delete',
             'CapsLock', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', `Э`, 'Enter',
             'Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '?', 'Up', ' Shift',
-            'Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Ctrl', 'Left', 'Down', 'Right', 'RU']
-const shiftActive = [ '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+']
-const shiftActiveRu = [ 'Ё', '!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+']  
+            'Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Ctrl', 'Left', 'Down', 'Right', 'RU'];
+const shiftActive = [ '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'];
+const shiftActiveRu = [ 'Ё', '!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+'];
 
 let shiftStatus = false;
 let capsStatus = false;
@@ -17,6 +13,8 @@ let upperStatus = false;
 let langStatus = false;
 let arr;
 let area = document.createElement('textarea');
+let areaValue;
+let currentPos;
 area.id = 'area';
 document.body.append(area);
 
@@ -28,26 +26,22 @@ wrap.setAttribute( 'onselect','return false');
 wrap.setAttribute( 'onmousedown','return false');
 let info = document.createElement('div');
 info.id = 'info';
-info.innerHTML = 'Сделано под Windows, смена раскладки Alt+Shift. <br> Если отсутствует подсветка, при нажатии на клавиатуру, нажмите на клавишу EN'
+info.innerHTML = 'Сделано под Windows, смена раскладки Alt+Shift. <br> Если отсутствует подсветка, при нажатии на клавиатуру, нажмите на клавишу EN';
 document.body.append(info);
 
-
 if (localStorage.getItem('language') == null) {
-    arr = ENG
+    arr = ENG;
 }
 else if (localStorage.getItem('language') == 'ENG') {
     arr = ENG ;
 }
 else {
-    arr = RU
+    arr = RU;
 }
-
-
 document.addEventListener('load', lang(arr))
 // Отрисовка клавы
 function lang (arr) {
-    arr.map(function(el, i) {
-        
+    arr.map(function(el, i) {        
         let div = document.createElement('div');
         wrap.append(div);
         div.innerHTML = el;
@@ -67,7 +61,7 @@ function lang (arr) {
             div.className = 'space';
         }
         else if ( i == 53 || i == 61 || i == 62 || i == 63 ) {
-            div.className = 'arrow' 
+            div.className = 'arrow' ;
         }
         else {
         div.className = 'key';
@@ -100,7 +94,7 @@ function alternative (arr) {
  });
 
 // Нажатие на клавиатуру
- document.addEventListener('keydown', function (event) {
+document.addEventListener('keydown', function (event) {
      area.focus()
      arr.forEach( function (el, index) {        
         if (el.toUpperCase() == event.key.toUpperCase() ) {
@@ -124,8 +118,7 @@ function alternative (arr) {
                     }
                     else {
                         alternative(shiftActive);
-                    } 
-                    
+                    }                    
             }
             wrap.querySelectorAll('div')[index].style.background = 'red';
             wrap.querySelectorAll('div')[index + 12].style.background = 'red';
@@ -219,10 +212,12 @@ function alternative (arr) {
      
  })
  
+ 
 // Реакция на клики
  document.getElementById('wrapper').addEventListener('click', function (event) {
-    area.focus()
-    if (event.target.id != 'wrapper') {  
+    area.focus();
+    if (event.target.id != 'wrapper') {
+        currentPos = area.selectionStart;  
         if (event.target.classList.contains('shift')) {
             if (shiftStatus === true) {
                 if (upperStatus == true) {
@@ -279,26 +274,69 @@ function alternative (arr) {
         }
 
         else {    event.target.style.background = 'red';
-            if (event.target.classList.contains('key') && upperStatus == 0) {
-                document.getElementById('area').value += event.target.innerHTML.toLowerCase();
+            if (event.target.classList.contains('key') && upperStatus == 0) {                             
+                areaValue = document.getElementById('area').value.split('');
+                areaValue.splice(currentPos, 0, event.target.innerHTML.toLowerCase());
+                document.getElementById('area').value = areaValue.join('');
+                area.selectionStart = area.selectionEnd = currentPos + 1;
             }
-            if (event.target.classList.contains('key') && upperStatus != 0) {
-                document.getElementById('area').value += event.target.innerHTML;
+            if (event.target.classList.contains('key') && upperStatus != 0) {                           
+                areaValue = document.getElementById('area').value.split('');
+                areaValue.splice(currentPos, 0, event.target.innerHTML);
+                document.getElementById('area').value = areaValue.join('');
+                area.selectionStart = area.selectionEnd = currentPos + 1;
             }
             if (event.target.innerHTML ==='Tab') {
-                document.getElementById('area').value += '  ';
+                areaValue = document.getElementById('area').value.split('');
+                areaValue.splice(currentPos, 0, '  ');
+                document.getElementById('area').value = areaValue.join('');
+                area.selectionStart = area.selectionEnd = currentPos + 2;
             }
             if (event.target.innerHTML ==='Delete') {
-                document.getElementById('area').value = '';
+                areaValue = document.getElementById('area').value.split('');
+                areaValue.splice(currentPos, 1);
+                document.getElementById('area').value = areaValue.join('');
+                area.selectionStart = area.selectionEnd = currentPos;                
             }
             if (event.target.innerHTML ==='Backspace') {
-                document.getElementById('area').value = document.getElementById('area').value.slice(0, -1) ;
+                areaValue = document.getElementById('area').value.split('');
+                if (currentPos != 0) {
+                    areaValue.splice(currentPos - 1, 1);
+                }
+                else {
+                    areaValue.splice(currentPos, 0);
+                }
+                document.getElementById('area').value = areaValue.join('');
+                if( currentPos != 0) {
+                    area.selectionStart = area.selectionEnd = currentPos -1;
+                }
+                else {
+                    area.selectionStart = area.selectionEnd = currentPos;
+                }
             }
             if (event.target.innerHTML ==='Enter') {
-                document.getElementById('area').value += '\n';
+                areaValue = document.getElementById('area').value.split('');
+                areaValue.splice(currentPos, 0, '\n');
+                document.getElementById('area').value = areaValue.join('');
+                area.selectionStart = area.selectionEnd = currentPos + 1;
             }
             if (event.target.innerHTML ==='Space') {
-                document.getElementById('area').value += ' ';
+                areaValue = document.getElementById('area').value.split('');
+                areaValue.splice(currentPos, 0, ' ');
+                document.getElementById('area').value = areaValue.join('');
+                area.selectionStart = area.selectionEnd = currentPos + 1;
+            }
+            if (event.target.innerHTML ==='Left') {
+                (currentPos != 0) ? area.selectionStart = area.selectionEnd = currentPos -1 : area.selectionStart = area.selectionEnd = currentPos = 0; 
+            }
+            if (event.target.innerHTML ==='Right') {
+                area.selectionStart = area.selectionEnd = currentPos +1;
+            }
+            if (event.target.innerHTML ==='Up') {
+                area.selectionStart = area.selectionEnd = currentPos = 0;
+            }
+            if (event.target.innerHTML ==='Down') {
+                area.selectionStart = area.selectionEnd = currentPos = area.value.length;
             }
             if (event.target.innerHTML ==='EN' || event.target.innerHTML ==='RU' ) {
                 wrap.querySelectorAll('div').forEach(el => el.remove())
@@ -321,4 +359,3 @@ function alternative (arr) {
      
  })
 
-/*  wrap.querySelectorAll('div')[0].style.background = 'red'; */
